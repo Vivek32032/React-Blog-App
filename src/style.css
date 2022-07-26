@@ -1,0 +1,39 @@
+.hero{
+    background-color: rgb(98, 198, 98);
+    padding: 5rem;
+    text-align: center;
+}
+
+.container{
+    margin: 0 auto;
+}
+.articles {
+    flex: 0 1 55%
+}
+.tags {
+    flex : 0 1 35%;
+    background-color : rgb(231, 230, 230)
+}
+/* .tags button{
+   paa\\
+} */
+
+.item {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+   }
+.row {
+    flex: 0 1 55%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: center;
+    align-items: center;
+    height: 50vh;
+   }
+.flex-55 {
+    flex: 0 1 55%;
+   }
