@@ -1,5 +1,3 @@
- import Articles from "./Articles"
- import Tags from "./Tags"
  import Hero from "./Hero"
  
  

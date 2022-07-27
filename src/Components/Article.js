@@ -1,6 +1,6 @@
 import LoaderFile from "./LoaderFile";
 import { ArticlesURL } from "../utilities/constants";
-import React, { Component } from "react";
+import React from "react";
 import { useParams } from "react-router-dom";
 
 function withParams(Component) {
@@ -18,6 +18,7 @@ class Article extends React.Component{
     }
 
     componentDidMount() {
+        console.log(this.props)
         this.getArticle();
     }
 
