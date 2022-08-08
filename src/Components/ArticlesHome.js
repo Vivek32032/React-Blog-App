@@ -8,6 +8,8 @@ import Hero from "./Hero"
 class ArticlesHome extends React.Component {
   constructor(props) {
     super();
+    console.log(props)
+    console.log("hi")
 
     this.state = {
       articles: null,
@@ -47,7 +49,6 @@ class ArticlesHome extends React.Component {
         return res.json();
       })
       .then((data) => {
-        console.log(data);
         this.setState({
           articles: data.articles,
           articlesCount: data.articlesCount,

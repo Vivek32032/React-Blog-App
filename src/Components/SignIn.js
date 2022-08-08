@@ -44,6 +44,7 @@ class SignIn extends React.Component{
               console.log(user);
               this.props.updateUser(user);
               this.setState({ password: '', email: '' });
+              console.log(this.props.history)
               this.props.history.push('/articles');
             })
             .catch((error) => { 
@@ -66,6 +67,7 @@ class SignIn extends React.Component{
 
 
     return (
+      <>
         <div className="text-center">
     
         <form className=" w-1/3 p-10 pt-5 mx-auto bg-gray-100 mt-10" onSubmit={this.handleSubmit}>
@@ -82,10 +84,13 @@ class SignIn extends React.Component{
             <input onChange={this.handleChange} className="px-4 py-2 my-4 border w-full" type="password" id="password"  placeholder="password" name="password" value={this.state.password}/>
             <span className="text-red-500">{password}</span>
 
-            <input className="text-xl m-auto rounded-md text-red-500 cursor-pointer bg-red-500 text-gray-100 mt-5 py-2 w-1/3" type="submit" value="Sign in" disabled={password || email}/>
+            <input className="text-xl m-auto rounded-md cursor-pointer bg-green-500 text-gray-100 mt-5 py-2 w-1/3" type="submit" value="Sign in" disabled={password || email}/>
         </fieldset>
         </form>
         </div>
+       
+        </>
+
     )
     }
 }

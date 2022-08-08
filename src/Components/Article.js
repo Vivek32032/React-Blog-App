@@ -18,7 +18,7 @@ class Article extends React.Component{
     }
 
     componentDidMount() {
-        console.log(this.props)
+        console.log(this.props.match)
         this.getArticle();
     }
 

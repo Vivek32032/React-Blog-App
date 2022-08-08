@@ -49,15 +49,20 @@ class App extends React.Component {
     localStorage.setItem(localStorageKey, user.token);
   };
 
+  handleLogout = () => {
+    this.setState({ isLoggedIn: false, user: null });
+    localStorage.removeItem(localStorageKey);
+  };
+
   render() {
     if (this.state.isVerifying) {
       return <LoaderFile />;
     }
     return (
       <Router>
-        <Header isLoggedIn={this.state.isLoggedIn} user={this.state.user} />
+        <Header {...this.state} handleLogout={this.handleLogout} />
         {this.state.isLoggedIn ? (
-          <AuthenticatedApp {...this.state} />
+          <AuthenticatedApp {...this.state} handleUser={this.updateUser} />
         ) : (
           <UnAuthenticatedApp updateUser={this.updateUser} />
         )}
@@ -71,9 +76,9 @@ function AuthenticatedApp(props) {
       <Route path="/" exact element={<Home />}/>
       <Route path="/articles" exact element={<ArticlesHome {...props} />}/>
       <Route path="/articles/:slug" element={ <Article />} />
-      <Route path="/new-article" exact element = {<NewArticle updateUser={props.updateUser} />}/>
-      <Route path="/settings" exact element={ <Setting />}/>
-      <Route path="/profile" exact  element={<Profile />}/>
+      <Route path="/new-article" exact element = {<NewArticle />}/>
+      <Route path="/settings" exact element={ <Setting  user={props.user} handleUser={props.updateUser} />}/>
+      <Route path="/profile/:id" exact  element={<Profile user={props.user} />}/>
       <Route path="*" element={ <NotFound /> }/>
     </Routes>
   );
@@ -86,7 +91,8 @@ function UnAuthenticatedApp(props) {
       <Route path="/register" exact element={ <SignUp updateUser={props.updateUser} />}/>
       <Route path="/login" exact element={<SignIn updateUser={props.updateUser} />}/>
       <Route path="/articles" exact element={<ArticlesHome {...props} />}/>
-      <Route path="/articles/:slug" element={ <Article />} />
+      <Route path="/articles/:slug" element={ <Article {...props}/>} />
+      <Route path="/profiles/:id" element={<Profile user={props.user}/>} />
       <Route path="*" element={<NotFound />}/>
     </Routes>
   );
