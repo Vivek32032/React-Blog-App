@@ -12,7 +12,7 @@ import Profile from "./Profile";
 import NotFound from "./NotFound";
 import { localStorageKey, UserVerifyURL } from '../utilities/constants';
 import NewArticle from "./NewArticle";
-
+import UpdateArticle from "./UpdateArticle";
 
 class App extends React.Component {
   state = {
@@ -75,10 +75,11 @@ function AuthenticatedApp(props) {
     <Routes>
       <Route path="/" exact element={<Home />}/>
       <Route path="/articles" exact element={<ArticlesHome {...props} />}/>
-      <Route path="/articles/:slug" element={ <Article />} />
+      <Route path="/articles/:slug" element={ <Article {...props}/>} />
+      <Route path="/articles/edit/:slug" element = {<UpdateArticle {...props}/>}/>
       <Route path="/new-article" exact element = {<NewArticle />}/>
       <Route path="/settings" exact element={ <Setting  user={props.user} handleUser={props.updateUser} />}/>
-      <Route path="/profile/:id" exact  element={<Profile user={props.user} />}/>
+      <Route path="/profiles/:id" exact  element={<Profile {...props}/>}/>
       <Route path="*" element={ <NotFound /> }/>
     </Routes>
   );

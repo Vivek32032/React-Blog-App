@@ -24,18 +24,17 @@ class Profile extends React.Component {
   }
 
   getUserInfo = () => {
-    let { id } = this.props.match.params;
+    let id  = this.props.user.username;
     fetch(profileURL + id)
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         this.setState({ user: data.profile }, this.getArticles);
       });
   };
 
   componentDidUpdate() {
     let user = this.state.user;
-    let { id } = this.props.match.params;
+    let id = this.props.user.username;
     if (user.username !== id) {
       this.getUserInfo();
     }
@@ -98,12 +97,12 @@ class Profile extends React.Component {
             <div className="float-right mr-10 ">
             {loggedInUser !== username && (
               <button className="bg-blue-300 text-gray-700 btn rounded-full hover:bg-blue-400 transform transition duration-500 hover:scale-105">
-              <i class="fas fa-plus mr-2"></i>Follow
+              <i className="fas fa-plus mr-2"></i>Follow
               </button>
             )}
             {loggedInUser === username && (
               <Link to="/settings" className="btn bg-gray-200 text-gray-600 hover:bg-yellow-200">
-                <i class="fas fa-user-edit mr-2"></i>Edit Profile
+                <i className="fas fa-user-edit mr-2"></i>Edit Profile
               </Link>
             )}
             </div>
@@ -155,7 +154,7 @@ class Profile extends React.Component {
               <Articles articles={articles} error={error} />
             </div>
           </article>
-          <div className="text-center py-8">
+          <div className="text-center py-8 container flex justify-center">
             <Pagination
               articlesCount={articlesCount}
               articlesPerPage={articlesPerPage}

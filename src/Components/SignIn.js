@@ -2,6 +2,8 @@ import React from "react";
 import { Link } from 'react-router-dom';
 import { loginURL } from '../utilities/constants';
 import { validations } from '../utilities/validations';
+import { useNavigate } from 'react-router-dom';
+
 
 class SignIn extends React.Component{
 
@@ -41,11 +43,10 @@ class SignIn extends React.Component{
               return res.json();
             })
             .then(({ user }) => {
-              console.log(user);
               this.props.updateUser(user);
               this.setState({ password: '', email: '' });
-              console.log(this.props.history)
-              this.props.history.push('/articles');
+              const navigate = useNavigate();
+              navigate('/articles');
             })
             .catch((error) => { 
               this.setState((prevState) => {

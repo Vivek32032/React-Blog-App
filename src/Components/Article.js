@@ -1,7 +1,9 @@
-import LoaderFile from "./LoaderFile";
-import { ArticlesURL } from "../utilities/constants";
 import React from "react";
-import { useParams } from "react-router-dom";
+import LoaderFile from "./LoaderFile";
+import { ArticlesURL, localStorageKey } from "../utilities/constants";
+import { Link, useParams } from "react-router-dom";
+import CommentBox from './CommentBox';
+import { createBrowserHistory } from "history";
 
 function withParams(Component) {
   return (props) => <Component {...props} params={useParams()} />;
@@ -18,7 +20,6 @@ class Article extends React.Component{
     }
 
     componentDidMount() {
-        console.log(this.props.match)
         this.getArticle();
     }
 
@@ -45,9 +46,44 @@ class Article extends React.Component{
          return newDate;
      }
 
+     handleEdit = () => {
+        let { slug } = this.state.article;
+        const history = createBrowserHistory();
+        history.push({
+          pathname: `/articles/edit/${slug}`,
+          article: this.state.article,
+        });
+        history.go();
+      };
+    
+      handleDelete = () => {
+        let { user } = this.props;
+        fetch(ArticlesURL + '/' + this.props.params.slug, {
+          method: 'DELETE',
+          headers: {
+            Authorization: 'Bearer ' + localStorage[localStorageKey],
+          },
+        })
+          .then((res) => {
+            if (!res.ok) {
+              return res.json().then(({ errors }) => {
+                return Promise.reject(errors);
+              });
+            }
+            const history = createBrowserHistory()
+            history.push(`/profiles/${user.username}`);
+            history.go()
+          })
+          .catch((err) => console.log(err));
+      };
+
     render() {
         let {error, article} = this.state;
-            if(error) {
+        let loggedInUser = this.props?.user?.username;
+        let isLoggedIn = this.props?.isLoggedIn;
+        let user = this.props?.user;
+
+        if(error) {
                 return <h2 className="text-red-500 text-center text-xl mt-8">{error}</h2>
             }
 
@@ -75,13 +111,55 @@ class Article extends React.Component{
                         }
 
                    </div>
+
+            {isLoggedIn && user.username === article.author.username && 
+                   (
+            <div className="float-right">
+              <span
+                className={
+                  'btn bg-gray-300 text-gray-600 rounded-md mx-3 cursor-pointer'
+                }
+                onClick={this.handleEdit}
+              >
+                <i className="far fa-edit mr-2"></i> Edit
+              </span>
+
+              <span
+                className={
+                  'bg-red-700 btn text-white rounded-md mx-3 cursor-pointer'
+                }
+                onClick={this.handleDelete}
+              >
+                <i className="far fa-trash-alt mr-2"></i>Delete
+              </span>
+            </div>
+          )
+            } 
+
+          {} 
                 </section> 
 
-                {/* article body */}
-                 <section className="px-20 py-12">
-                    <p className="text-xl">{article.body}</p>
-                </section>  
-            </main>
+            {/* article body */}
+                <section className="px-20 py-12">
+          <p className="text-lg text-gray-700 bg-yellow-100 px-5 py-5 border shadow-xl">
+            {article.body}
+          </p>
+        </section>
+        <section className="px-20 py-12">
+          <CommentBox {...this.props} slug={article.slug} />
+          {!loggedInUser && (
+            <div className="flex justify-center mt-10 mb-5">
+              <h3 className="text-xl text-gray-600">
+                Please
+                <Link to="/login" className="text-green-700 mx-1">
+                  Login
+                </Link>
+                to Add Comments on the Article
+              </h3>
+            </div>
+          )}
+        </section>
+      </main>
         )
     }
 }
